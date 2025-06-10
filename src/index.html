@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Budget Blu</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+     <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/dashboard.js"></script>
+    <script type="module" src="./js/transactions.js"></script>
+    <script type="module" src="./js/mobile-menu.js"></script>
+
+  </head>
+  <body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <!-- Logo Section -->
+  <div class="logo-container">
+    <img src="./public/images/logo.jpg" alt="Budget Blu Logo" class="logo-image">
+  </div>
+  <h1>Budget Blu</h1>
+
+  <!-- Desktop Navigation Buttons -->
+  <div class="nav-links" id="desktopNav">
+    <a href="index.html" class="nav-btn">Dashboard</a>
+    <a href="./reports/report.html" class="nav-btn">Reports</a>
+    <a href="./auth/login.html" class="nav-btn" id="loginLink">Login</a>
+    <a href="./auth/signup.html" class="nav-btn" id="signupLink">Sign Up</a>
+    <div class="nav-user" id="userSection" style="display: none">
+      <div class="user-info">
+        <span id="userName">Welcome!</span>
+        <button onclick="logout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Toggle -->
+  <button id="mobileMenuToggle" class="mobile-menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+
+
+     <!-- Dashboard Main Container -->
+    <main class="dashboard-container">
+      <!-- Welcome Section -->
+      <section class="welcome-section">
+        <div class="welcome-content">
+          <h2 class="welcome-title">
+            <i class="fas fa-chart-line"></i>
+            Financial Dashboard
+          </h2>
+          <p class="welcome-subtitle">Track your expenses, manage your budget, and achieve your financial goals</p>
+        </div>
+      </section>
+<!-- Balance and Summary Section -->
+      <section class="summary-boxes">
+        <div class="summary-card balance">
+          <div class="card-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <div class="card-content">
+            <h3>Total Balance</h3>
+            <span class="amount">₦<span id="totalBalance">0.00</span></span>
+          </div>
+        </div>
+        
+        <div class="summary-card budget">
+          <div class="card-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="card-content">
+            <h3>Budget Used</h3>
+            <span class="percentage" id="budgetProgress">0%</span>
+            <div class="progress-bar">
+              <div class="progress-fill" id="budgetProgressBar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card income">
+          <div class="card-icon">
+            <i class="fas fa-arrow-up"></i>
+          </div>
+          <div class="card-content">
+            <h3>Total Income</h3>
+            <span class="amount income">₦<span id="totalIncome">0.00</span></span>
+          </div>
+        </div>
+
+        <div class="summary-card expenses">
+          <div class="card-icon">
+            <i class="fas fa-arrow-down"></i>
+          </div>
+          <div class="card-content">
+            <h3>Total Expenses</h3>
+            <span class="amount expense"><span id="totalExpenses">0.00</span></span>
+          </div>
+        </div>
+      </section>
+
+
+       <!-- Charts Section -->
+      <section class="charts-section">
+        <div class="chart-container">
+          <h3>
+            <i class="fas fa-chart-doughnut"></i>
+            Expense Breakdown
+          </h3>
+          <canvas id="expenseChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Transaction History Section -->
+      <section class="recent-transactions">
+        <div class="section-header">
+          <h2>
+            <i class="fas fa-history"></i>
+            Recent Transactions
+          </h2>
+          <a href="./transactions/transaction.html" class="view-all-btn">
+            View All
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+        
+        <div class="transactions-container">
+          <ul id="transactionList" class="transaction-list">
+            <!-- Transactions will be dynamically populated by JavaScript -->
+            <li class="no-transactions">
+              <i class="fas fa-receipt"></i>
+              <p>No transactions yet. Add your first transaction to get started!</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <!-- Navigation to Add Transaction Page -->
+      <section class="quick-actions">
+        <button class="add-btn primary" id="addTransactionBtn">
+          <i class="fas fa-plus"></i>
+          Add Transaction
+        </button>
+      </section>
+    </main>
+    <!-- Add Transaction Modal -->
+    <div id="addTransactionModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>
+            <i class="fas fa-plus-circle"></i>
+            Add New Transaction
+          </h2>
+          <button class="close-btn" id="closeModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <form id="addTransactionForm" class="transaction-form">
+          <div class="form-group">
+            <label for="transactionType">Transaction Type</label>
+            <select id="transactionType" name="type" required>
+              <option value="">Select Type</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionAmount">Amount (₦)</label>
+            <input 
+              type="number" 
+              id="transactionAmount" 
+              name="amount" 
+              step="0.01" 
+              min="0" 
+              placeholder="0.00" 
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="transactionCategory">Category</label>
+            <select id="transactionCategory" name="category" required>
+              <option value="">Select Category</option>
+              <!-- Categories will be populated by JavaScript -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="transactionDescription">Description</label>
+            <input 
+              type="text" 
+              id="transactionDescription" 
+              name="description" 
+              placeholder="Enter transaction description" 
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="transactionDate">Date</label>
+            <input 
+              type="date" 
+              id="transactionDate" 
+              name="date" 
+              required
+            >
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn secondary" id="cancelTransaction">
+              Cancel
+            </button>
+            <button type="submit" class="btn primary" id="saveTransaction">
+              <i class="fas fa-save"></i>
+              Save Transaction
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Message Area for notifications -->
+    <div id="messageArea" class="message-area" style="display: none;"></div>
+    
+
+<!-- Map Section -->
+    
+        <h2>Map</h2>
+        <section id="map">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.073292073073!2d7.370073314769073!3d5.117978396058073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x106d8b1b1b1b1b1b%3A0x7b1b1b1b1b1b1b1b!2sAba%20Nigeria%20Temple!5e0!3m2!1sen!2sng!4v1626823660001!5m2!1sen!2sng"
+            height="400" style="border:0;" allowfullscreen="" loading="lazy">
+        </iframe>
+    </section>
+
+
+    <footer id="main-footer">
+      <p>&copy; 2025 Budget Blu. All rights reserved.</p>
+      <p><a href="contactus.html">Contact Us</a></p>
+      <p>Privacy Policy | Terms of Service</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,589 @@
+/* Importing fonts from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto&display=swap");
+
+/* ------------------------- */
+/*    ROOT VARIABLES         */
+/* ------------------------- */
+:root {
+  --primary-color: #060481; /* Dark Blue */
+  --accent-color: #efefe6; /* Gray White */
+  --secondary-white: #f5f5f5fa; /* Light White */
+  --secondary-dark: #060481; /* Dark Purple */
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Roboto", serif;
+}
+
+/* ------------------------- */
+/*    GLOBAL RESET           */
+/* ------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--secondary-white);
+  color: var(--primary-color);
+  line-height: 1.6;
+  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 1rem;
+}
+
+p {
+  padding: 0.75rem;
+}
+
+/* Logo Container */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo-image:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.5px;
+}
+
+.divider {
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* ------------------------- */
+/*    HEADER & NAVBAR        */
+/* ------------------------- */
+.navbar {
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+}
+
+.navbar h1 {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+}
+
+.navbar button,
+.nav-btn {
+  background-color: var(--secondary-dark);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/*-----------------------------*/
+/*     Mobile Menu Style       */
+/*-----------------------------*/
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.logo-container img {
+  width: 50px;
+  height: auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Hamburger Menu Button */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  flex-direction: column;
+}
+
+.mobile-menu-toggle span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  margin: 2px 0;
+  transition: all 0.3s ease;
+}
+
+/* Hamburger Animation */
+.mobile-menu-toggle.active span:first-child {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active span:last-child {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+  }
+  
+  .navbar {
+    position: relative;
+  }
+  
+  .navbar.mobile-menu-open {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  /* Hide menu items by default on mobile */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 1000;
+  }
+  
+  /* Show menu when open */
+  .navbar.mobile-menu-open .nav-links {
+    display: flex;
+  }
+}
+
+/*-----------------------------*/
+/*     FOOTER STYLES          */
+/*-----------------------------*/
+/* Reduce the footer’s height and spacing */
+#main-footer {
+  background-color: var(--light-grey, #f8f8f8);
+  color: var(--dark-grey, #333);
+  text-align: center;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.95rem;
+  border-top: 1px solid #ddd;
+  margin-top: 0.5rem;
+  height: auto;
+  min-height: 32px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+#main-footer p {
+  margin: 0.05rem 0;
+  padding: 0;
+}
+
+/* Prevent vertical scroll unless needed */
+body {
+  overflow-y: auto;
+}
+
+/* ------------------------- */
+/*    AUTH FORMS (LOGIN, SIGNUP) */
+/* ------------------------- */
+.auth-container,
+.form-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(6, 4, 129, 0.2);
+}
+
+.auth-container h2,
+.form-container h2 {
+  font-family: var(--font-heading);
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+form button {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: var(--secondary-dark);
+}
+
+/* Align terms checkbox and text on the same line */
+/* Improved alignment for terms checkbox and text */
+.terms-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0;
+}
+
+.terms-inline .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.terms-inline input[type="checkbox"] {
+  margin: 0 8px 0 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color);
+}
+
+.terms-inline .checkbox-text {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  line-height: 1.4;
+  flex-wrap: wrap;
+  gap: 0.2em;
+}
+
+/* Password input container */
+.password-input-container {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.password-input-container input {
+  width: 100%;
+  padding-right: 45px; /* Make space for the toggle button */
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+/* Password toggle button - positioned inside the input */
+.password-toggle {
+  position: absolute;
+  top: 30%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.password-toggle:hover {
+  color: #495057;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.password-toggle:focus {
+  outline: 2px solid #007bff;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+.password-toggle.active {
+  color: #007bff;
+}
+
+/* Ensure the toggle button doesn't interfere with input focus */
+.password-input-container input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Password strength indicator */
+.password-strength {
+  margin-top: 8px;
+  display: none;
+}
+
+.password-strength.active {
+  display: block;
+}
+
+.strength-bar {
+  width: 100%;
+  height: 4px;
+  background-color: #e9ecef;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
+  border-radius: 2px;
+}
+
+.strength-text {
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  color: #6c757d;
+}
+
+/* Password strength classes */
+.weak-password {
+  border-color: #dc3545 !important;
+}
+
+.weak-password:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.medium-password {
+  border-color: #ffc107 !important;
+}
+
+.medium-password:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important;
+}
+
+.strong-password {
+  border-color: #28a745 !important;
+}
+/* Error message styling */
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+}
+
+.error-message:not(:empty) {
+  display: block;
+}
+
+/* Loading state for button */
+.auth-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-spinner {
+  display: none;
+}
+
+/* Success modal enhancements */
+.success-modal {
+  text-align: center;
+  padding: 2rem;
+}
+
+.success-icon {
+  font-size: 3rem;
+  color: #28a745;
+  margin-bottom: 1rem;
+}
+
+.success-modal h3 {
+  color: #28a745;
+  margin-bottom: 0.5rem;
+}
+
+.success-modal p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* ------------------------- */
+/*    DASHBOARD LAYOUT       */
+/* ------------------------- */
+.dashboard-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.summary-boxes {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.summary-boxes div {
+  flex: 1;
+  background-color: var(--accent-color);
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* ------------------------- */
+/*    CHART SECTION          */
+/* ------------------------- */
+.charts {
+  margin-bottom: 2rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------------- */
+/*    TRANSACTIONS LIST      */
+/* ------------------------- */
+.recent-transactions h2 {
+  font-family: var(--font-heading);
+  margin-bottom: 1rem;
+}
+
+#transactionList {
+  list-style-type: none;
+}
+
+#transactionList li {
+  padding: 0.75rem;
+  background-color: var(--accent-color);
+  border-left: 6px solid var(--primary-color);
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+}
+
+/* ------------------------- */
+/*    ADD BUTTON             */
+/* ------------------------- */
+.add-btn {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  float: right;
+}
+
+.add-btn:hover {
+  background-color: var(--secondary-dark);
+}
+/* ------------------------- */
+/*    MAP SECTION            */
+/* ------------------------- */
+#map {
+  height: 50vh;
+  width: 100%;
+  margin-top: 10px;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ------------------------- */
+/*    RESPONSIVE DESIGN      */
+/* ------------------------- */
+@media (max-width: 768px) {
+  .summary-boxes {
+    flex-direction: column;
+  }
+
+  .navbar,
+  .dashboard-container {
+    padding: 1rem;
+  }
+    .nav-links {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: flex;
+  }
+}
+

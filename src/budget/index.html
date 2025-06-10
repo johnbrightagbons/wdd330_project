@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Budget - Budget Blu</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <h1>Budget Blu</h1>
+    <a href="../index.html" class="nav-btn">Dashboard</a>
+    <a href="../auth/login.html" class="nav-btn">Login</a>
+    <a href="../reports/report.html" class="nav-btn">Reports</a>
+    <a href="index.html" class="nav-btn">Budget</a>
+    <button onclick="logout()">Logout</button>
+  </nav>
+
+  <main class="dashboard-container">
+    <section class="summary-boxes">
+      <div>
+        <strong>Monthly Budget:</strong> ₦<span id="monthlyBudget">0.00</span>
+      </div>
+      <div>
+        <strong>Spent:</strong> ₦<span id="amountSpent">0.00</span>
+      </div>
+      <div>
+        <strong>Remaining:</strong> ₦<span id="amountRemaining">0.00</span>
+      </div>
+    </section>
+
+    <section class="budget-form-section">
+      <h2>Set Your Monthly Budget</h2>
+      <form id="budgetForm" class="form-container">
+        <div class="form-group">
+          <label for="budgetAmount">
+            <i class="fas fa-wallet"></i>
+            Monthly Budget Amount (₦)
+          </label>
+          <input type="number" id="budgetAmount" name="budgetAmount" min="0" step="0.01" required placeholder="Enter amount" />
+        </div>
+        <button type="submit" class="auth-btn primary">Save Budget</button>
+        <div class="error-message" id="budgetError"></div>
+      </form>
+    </section>
+
+    <section class="budget-history">
+      <h2>Budget History</h2>
+      <ul id="budgetHistoryList">
+        <!-- Budget history items will be dynamically populated -->
+      </ul>
+    </section>
+  </main>
+
+  <footer id="main-footer">
+    <p>&copy; 2025 Budget Blu. All rights reserved.</p>
+    <p><a href="../contactus.html">Contact Us</a></p>
+    <p>Privacy Policy | Terms of Service</p>
+  </footer>
+
+  <script src="budget.js"></script>
+</body>
+</html>

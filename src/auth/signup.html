@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - Budget Blu</title>
+    <link rel="stylesheet" href="../css/style.css" />
+   <script src="../js/auth.js" type="module" ></script>
+   <script src="../js/signup.js" type="module" ></script>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Main signup container -->
+    <div class="auth-container">
+      <!-- Left side - Branding and welcome message -->
+      <div class="auth-branding">
+        <div class="branding-content">
+          <h1>Budget Blu</h1>
+          <p class="tagline">Take control of your financial future</p>
+          <div class="features-list">
+            <div class="feature-item">
+              <i class="fas fa-chart-pie"></i>
+              <span>Track expenses and income</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-target"></i>
+              <span>Set and achieve financial goals</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-shield-alt"></i>
+              <span>Secure and private</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side - Signup form -->
+      <div class="auth-form-container">
+        <div class="auth-form">
+          <!-- Form header -->
+          <div class="form-header">
+            <h2>Create Your Account</h2>
+            <p>
+              Join thousands of users managing their finances with Budget Blu
+            </p>
+          </div>
+
+          <!-- Signup form -->
+          <form id="signupForm" class="signup-form" novalidate>
+            <!-- Full Name Input -->
+            <div class="form-group">
+              <label for="fullName">
+                <i class="fas fa-user"></i>
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                required
+                placeholder="Enter your full name"
+                autocomplete="name"
+              />
+              <!-- Error message container for name field -->
+              <div class="error-message" id="nameError"></div>
+            </div>
+
+            <!-- Email Input -->
+            <div class="form-group">
+              <label for="email">
+                <i class="fas fa-envelope"></i>
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="Enter your email address"
+                autocomplete="email"
+              />
+              <!-- Error message container for email field -->
+              <div class="error-message" id="emailError"></div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="form-group">
+              <label for="password">
+                <i class="fas fa-lock"></i>
+                Password
+              </label>
+              <div class="password-input-container">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  required
+                  placeholder="Create a strong password"
+                  autocomplete="new-password"
+                />
+                <!-- Toggle password visibility button -->
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="togglePassword"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <!-- Password strength indicator -->
+              <div class="password-strength" id="passwordStrength">
+                <div class="strength-bar">
+                  <div class="strength-fill" id="strengthFill"></div>
+                </div>
+                <span class="strength-text" id="strengthText"
+                  >Password strength</span
+                >
+              </div>
+              <!-- Error message container for password field -->
+              <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <!-- Confirm Password Input -->
+            <div class="form-group">
+              <label for="confirmPassword">
+                <i class="fas fa-lock"></i>
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                required
+                placeholder="Confirm your password"
+                autocomplete="new-password"
+              />
+              <!-- Error message container for confirm password field -->
+              <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+
+            <!-- Purpose Selection -->
+            <div class="form-group">
+              <label for="purpose">
+                <i class="fas fa-bullseye"></i>
+                What's your main goal with Budget Blu?
+              </label>
+              <select id="purpose" name="purpose" required>
+                <option value="">Select your primary purpose</option>
+                <option value="personal-budgeting">
+                  Personal Budgeting & Expense Tracking
+                </option>
+                <option value="debt-management">
+                  Debt Management & Payoff
+                </option>
+                <option value="savings-goals">
+                  Savings Goals & Emergency Fund
+                </option>
+                <option value="investment-tracking">
+                  Investment & Wealth Tracking
+                </option>
+                <option value="business-finances">
+                  Small Business Finance Management
+                </option>
+                <option value="family-budgeting">
+                  Family Budget Management
+                </option>
+                <option value="student-finances">
+                  Student Finance Management
+                </option>
+                <option value="retirement-planning">Retirement Planning</option>
+                <option value="general-overview">
+                  General Financial Overview
+                </option>
+                <option value="other">Other</option>
+              </select>
+              <!-- Error message container for purpose field -->
+              <div class="error-message" id="purposeError"></div>
+            </div>
+
+            <!-- Custom purpose input (shown when "Other" is selected) -->
+            <div
+              class="form-group"
+              id="customPurposeGroup"
+              style="display: none"
+            >
+              <label for="customPurpose">
+                <i class="fas fa-edit"></i>
+                Please specify your purpose
+              </label>
+              <input
+                type="text"
+                id="customPurpose"
+                name="customPurpose"
+                placeholder="Tell us about your financial goals"
+                maxlength="100"
+              />
+              <div class="error-message" id="customPurposeError"></div>
+            </div>
+
+            <!-- Terms and Privacy Agreement -->
+            <div class="form-group checkbox-group terms-inline">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="agreeTerms"
+                  name="agreeTerms"
+                  required
+                />
+                <span class="checkmark"></span>
+                <span class="checkbox-text">
+                  I agree to the
+                  <a href="#" class="link">Terms of Service</a>
+                  and
+                  <a href="#" class="link">Privacy Policy</a>
+                </span>
+              </label>
+              <div class="error-message" id="termsError"></div>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="auth-btn primary" id="signupBtn">
+              <span class="btn-text">Create Account</span>
+              <span class="btn-spinner" style="display: none">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+
+            <!-- Form footer with login link -->
+            <div class="form-footer">
+              <p>
+                Already have an account?
+                <a href="login.html" class="link">Sign in here</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success modal -->
+    <div id="successModal" class="modal" style="display: none">
+      <div class="modal-content success-modal">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Welcome to Budget Blu!</h3>
+        <p>Your account has been created successfully.</p>
+        <button id="continueBtn" class="auth-btn primary">
+          Continue to Dashboard
+        </button>
+      </div>
+    </div>
+
+    <!-- Success/Error Message Display -->
+    <div id="messageContainer" style="display: none">
+      <div id="messageContent"></div>
+    </div>
+
+  </body>
+</html>
