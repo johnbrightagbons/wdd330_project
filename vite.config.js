@@ -12,10 +12,8 @@ export default defineConfig({
         login: resolve(__dirname, "src/auth/login.html"),
         signup: resolve(__dirname, "src/auth/signup.html"),
         budget: resolve(__dirname, "src/budget/index.html"),
-        transactions: resolve(__dirname, "src/transactions/tansaction.html"),
+        transactions: resolve(__dirname, "src/transactions/transaction.html"),
         // report: resolve(__dirname, "src/reports/report.html"),
-        // Add or adjust entries below as needed for your project
-        // dashboard: resolve(__dirname, "src/budget/index.html"),
       },
     },
     assetsInclude: ["**/*.json", "**/*.svg"],

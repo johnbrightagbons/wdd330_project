@@ -292,3 +292,6 @@ export class ReportModule {
     this.charts = {};
   }
 }
+
+export { ReportModule as ReportManager };
+export default ReportModule;
