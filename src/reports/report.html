@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Budget Blu</title>
+    
+    <link rel="stylesheet" href="../css/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+    <script type="module" src="../js/reports.js"></script>
+    <script type="module" src="../js/transactions.js"></script>
+    <script type="module" src="../js/mobile-menu.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <!-- Logo Section -->
+        <div class="logo-container">
+            <img src="../public/images/logo.jpg" alt="Budget Blu Logo" class="logo-image">
+        </div>
+        <h1>Budget Blu</h1>
+
+        <!-- Desktop Navigation Buttons -->
+        <div class="nav-links" id="desktopNav">
+            <a href="../index.html" class="nav-btn">Dashboard</a>
+            <a href="report.html" class="nav-btn active">Reports</a>
+            <a href="../auth/login.html" class="nav-btn" id="loginLink">Login</a>
+            <a href="../auth/signup.html" class="nav-btn" id="signupLink">Sign Up</a>
+            <div class="nav-user" id="userSection" style="display: none">
+                <div class="user-info">
+                    <span id="userName">Welcome!</span>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobileMenuToggle" class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Reports Main Container -->
+    <main class="reports-container">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="header-content">
+                <h1>
+                    <i class="fas fa-chart-bar"></i>
+                    Financial Reports
+                </h1>
+                <p>Analyze your spending patterns and financial trends</p>
+            </div>
+        </section>
+
+        <!-- Filter Controls -->
+        <section class="filter-section">
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="reportPeriod">Time Period:</label>
+                    <select id="reportPeriod" class="filter-select">
+                        <option value="monthly">This Month</option>
+                        <option value="weekly">This Week</option>
+                        <option value="daily">Today</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+
+                <div class="filter-group" id="customDateRange" style="display: none;">
+                    <label for="startDate">From:</label>
+                    <input type="date" id="startDate" class="filter-input">
+                    <label for="endDate">To:</label>
+                    <input type="date" id="endDate" class="filter-input">
+                </div>
+
+                <div class="filter-group">
+                    <label for="reportCategory">Category:</label>
+                    <select id="reportCategory" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <!-- Categories will be populated by JavaScript -->
+                    </select>
+                </div>
+
+                <button id="generateReport" class="btn primary">
+                    <i class="fas fa-sync-alt"></i>
+                    Generate Report
+                </button>
+            </div>
+        </section>
+
+        <!-- Summary Cards -->
+        <section class="report-summary">
+            <div class="summary-card income-summary">
+                <div class="card-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Total Income</h3>
+                    <span class="amount income">₦<span id="reportTotalIncome">0.00</span></span>
+                    <small class="period-label" id="incomePeriodLabel">This Month</small>
+                </div>
+            </div>
+
+            <div class="summary-card expense-summary">
+                <div class="card-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Total Expenses</h3>
+                    <span class="amount expense">₦<span id="reportTotalExpenses">0.00</span></span>
+                    <small class="period-label" id="expensePeriodLabel">This Month</small>
+                </div>
+            </div>
+
+            <div class="summary-card balance-summary">
+                <div class="card-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Net Balance</h3>
+                    <span class="amount" id="reportNetBalance">₦0.00</span>
+                    <small class="period-label" id="balancePeriodLabel">This Month</small>
+                </div>
+            </div>
+
+            <div class="summary-card transactions-summary">
+                <div class="card-icon">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Transactions</h3>
+                    <span class="count" id="reportTransactionCount">0</span>
+                    <small class="period-label" id="transactionsPeriodLabel">This Month</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>
+                        <i class="fas fa-chart-pie"></i>
+                        Expense by Category
+                    </h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3>
+                        <i class="fas fa-chart-line"></i>
+                        Income vs Expenses
+                    </h3>
+                    <canvas id="incomeExpenseChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container full-width">
+                    <h3>
+                        <i class="fas fa-chart-area"></i>
+                        Spending Trends
+                    </h3>
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Breakdown -->
+        <section class="breakdown-section">
+            <h3>
+                <i class="fas fa-list-alt"></i>
+                Category Breakdown
+            </h3>
+            <div class="breakdown-table-container">
+                <table id="categoryBreakdownTable" class="breakdown-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Transactions</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Export Options -->
+        <section class="export-section">
+            <h3>
+                <i class="fas fa-download"></i>
+                Export Report
+            </h3>
+            <div class="export-buttons">
+                <button id="exportPDF" class="btn secondary">
+                    <i class="fas fa-file-pdf"></i>
+                    Export as PDF
+                </button>
+                <button id="exportCSV" class="btn secondary">
+                    <i class="fas fa-file-csv"></i>
+                    Export as CSV
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Message Area for notifications -->
+    <div id="messageArea" class="message-area" style="display: none;"></div>
+
+    <footer id="main-footer">
+        <p>&copy; 2025 Budget Blu. All rights reserved.</p>
+        <p><a href="../contactus.html">Contact Us</a></p>
+        <p>Privacy Policy | Terms of Service</p>
+    </footer>
+</body>
+</html>

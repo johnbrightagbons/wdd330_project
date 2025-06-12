@@ -567,6 +567,845 @@ form button:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/*-------------------------- */
+/*    REPORT                 */
+/*--------------------------*/
+/* Reports Page Specific Styles */
+
+.reports-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 120px);
+}
+
+/* Page Header */
+.page-header {
+  background: linear-gradient(135deg, #060481, #20023B);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(6, 4, 129, 0.2);
+}
+
+.header-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-content p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Filter Section */
+.filter-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 150px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.filter-select,
+.filter-input {
+  padding: 0.75rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  outline: none;
+  border-color: #060481;
+  box-shadow: 0 0 0 3px rgba(6, 4, 129, 0.1);
+}
+
+#customDateRange {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+#customDateRange label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Report Summary Cards */
+.report-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.summary-card .card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.income-summary .card-icon {
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.expense-summary .card-icon {
+  background: linear-gradient(135deg, #dc3545, #fd7e14);
+}
+
+.balance-summary .card-icon {
+  background: linear-gradient(135deg, #060481, #20023B);
+}
+
+.transactions-summary .card-icon {
+  background: linear-gradient(135deg, #6f42c1, #e83e8c);
+}
+
+.card-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.card-content .amount {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-content .count {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #060481;
+}
+
+.period-label {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.amount.income {
+  color: #28a745;
+}
+
+.amount.expense {
+  color: #dc3545;
+}
+
+/* Charts Section */
+.charts-section {
+  margin-bottom: 2rem;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container.full-width {
+  grid-column: 1 / -1;
+}
+
+.chart-container h3 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-container canvas {
+  max-height: 300px;
+}
+
+/* Breakdown Section */
+.breakdown-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.breakdown-section h3 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breakdown-table-container {
+  overflow-x: auto;
+}
+
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.breakdown-table th,
+.breakdown-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.breakdown-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  position: sticky;
+  top: 0;
+}
+
+.breakdown-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.breakdown-table .amount-cell {
+  font-weight: 600;
+  color: #dc3545;
+}
+
+.breakdown-table .percentage-cell {
+  font-weight: 600;
+  color: #060481;
+}
+
+/* Export Section */
+.export-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.export-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #060481, #20023B);
+  color: white;
+}
+
+.btn.primary:hover {
+  background: linear-gradient(135deg, #050366, #1a0230);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(6, 4, 129, 0.3);
+}
+
+.btn.secondary {
+  background: #f8f9fa;
+  color: #333;
+  border: 2px solid #e1e5e9;
+}
+
+.btn.secondary:hover {
+  background: #e9ecef;
+  border-color: #060481;
+  color: #060481;
+}
+
+/* Loading States */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #060481;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .reports-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .page-header {
+    padding: 1.5rem;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    min-width: auto;
+  }
+
+  #customDateRange {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .report-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .chart-container {
+    padding: 1rem;
+  }
+
+  .breakdown-table {
+    font-size: 0.85rem;
+  }
+
+  .breakdown-table th,
+  .breakdown-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content h1 {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .summary-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .card-content .amount,
+  .card-content .count {
+    font-size: 1.5rem;
+  }
+
+  .chart-container canvas {
+    max-height: 250px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .filter-section,
+  .export-section,
+  .navbar,
+  #main-footer {
+    display: none;
+  }
+
+  .reports-container {
+    max-width: none;
+    padding: 0;
+    background: white;
+  }
+
+  .page-header {
+    background: #060481 !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .summary-card,
+  .chart-container,
+  .breakdown-section {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
+}
+
+/* Animation for data updates */
+.data-update {
+  animation: dataUpdate 0.5s ease-in-out;
+}
+
+@keyframes dataUpdate {
+  0% { opacity: 0.5; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Status indicators */
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.status-indicator.good {
+  background-color: #28a745;
+}
+
+.status-indicator.warning {
+  background-color: #ffc107;
+}
+
+.status-indicator.danger {
+  background-color: #dc3545;
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------- */
+/*    CURRENCY DESIGN        */
+/* ------------------------- */
+/* Currency Selector Styles */
+.currency-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.currency-selector-container label {
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.currency-selector {
+  padding: 0.5rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.95rem;
+  min-width: 200px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.currency-selector:focus {
+  outline: none;
+  border-color: #060481;
+  box-shadow: 0 0 0 3px rgba(6, 4, 129, 0.1);
+}
+
+.currency-selector:hover {
+  border-color: #060481;
+}
+
+.currency-selector option {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Currency Loading Indicator */
+#currencyLoadingIndicator {
+  display: none;
+  margin-left: 0.5rem;
+  color: #060481;
+  font-size: 0.9rem;
+}
+
+#currencyLoadingIndicator::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 0.5rem;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #060481;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Currency Symbol Updates */
+.currency-symbol {
+  font-weight: bold;
+  color: #060481;
+  transition: all 0.3s ease;
+}
+
+/* Currency Rate Status */
+.currency-rate-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.currency-rate-status.recent {
+  color: #28a745;
+}
+
+.currency-rate-status.old {
+  color: #ffc107;
+}
+
+.currency-rate-status.never {
+  color: #dc3545;
+}
+
+.currency-rate-status i {
+  font-size: 0.7rem;
+}
+
+/* Currency Conversion Display */
+.currency-conversion {
+  background: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  border-left: 3px solid #060481;
+}
+
+.conversion-rate {
+  font-weight: 600;
+  color: #060481;
+}
+
+/* Refresh Button */
+.currency-refresh-btn {
+  background: none;
+  border: none;
+  color: #060481;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.currency-refresh-btn:hover {
+  background: rgba(6, 4, 129, 0.1);
+  transform: rotate(180deg);
+}
+
+.currency-refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .currency-selector-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 0.75rem;
+  }
+
+  .currency-selector-container label {
+    justify-content: center;
+  }
+
+  .currency-selector {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .currency-rate-status {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .currency-selector-container {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+  }
+
+  .currency-selector {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Animation for currency changes */
+.currency-updating {
+  animation: currencyUpdate 0.6s ease-in-out;
+}
+
+@keyframes currencyUpdate {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Currency dropdown in navbar */
+.navbar .currency-selector-container {
+  margin: 0;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.navbar .currency-selector-container label {
+  color: white;
+  font-size: 0.9rem;
+}
+
+.navbar .currency-selector {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.85rem;
+  min-width: 150px;
+}
+
+.navbar .currency-selector:focus {
+  background: white;
+  border-color: white;
+}
+
+/* Error states */
+.currency-error {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.currency-error i {
+  font-size: 0.7rem;
+}
+
+/* Success states */
+.currency-success {
+  color: #28a745;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.currency-success i {
+  font-size: 0.7rem;
+}
+
+/* Tooltip for currency info */
+.currency-tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.currency-tooltip::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.currency-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #333;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.currency-tooltip:hover::before,
+.currency-tooltip:hover::after {
+  opacity: 1;
+}
+
+
 /* ------------------------- */
 /*    RESPONSIVE DESIGN      */
 /* ------------------------- */

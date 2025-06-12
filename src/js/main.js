@@ -100,15 +100,31 @@ class BudgetBluApp {
   }
 
   async initializeDashboard() {
-    this.transactionManager = new TransactionManager(
-      this.updateDashboardStats.bind(this)
-    );
-    this.transactionManager.initialize();
+    try {
+      // Initialize new modules
+      this.categoryModule = new CategoryModule();
+      this.budgetModule = new BudgetModule();
+      this.budgetAlertManager = new BudgetAlertManager(
+        this.budgetModule,
+        this.notificationModule
+      );
 
-    this.reportModule = new ReportModule();
-    await this.reportModule.initialize();
+      // Populate category selects
+      const categorySelect = document.getElementById("transactionCategory");
+      if (categorySelect) {
+        this.categoryModule.populateCategorySelect(categorySelect);
+      }
 
-    this.updateDashboardStats();
+      // Check budget alerts
+      this.budgetAlertManager.checkAllBudgets();
+
+      // Update budget progress in dashboard
+      this.updateBudgetProgress();
+
+      console.log("Dashboard initialized successfully");
+    } catch (error) {
+      console.error("Error initializing dashboard:", error);
+    }
   }
 
   async initializeTransactions() {

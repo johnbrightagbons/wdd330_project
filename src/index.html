@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Budget Blu</title>
 
-    <link rel="stylesheet" href="./css/style.css"/>
+    <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
      <!-- JavaScript files -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -245,8 +245,18 @@
         </iframe>
     </section>
 
+    <!-- Add this to your navigation or dashboard -->
+    <div class="currency-selector-container">
+      <label for="currencySelector">
+        <i class="fas fa-exchange-alt"></i>
+        Currency:
+      </label>
+      <select id="currencySelector" class="currency-selector">
+        <!-- Options will be populated by JavaScript -->
+      </select>
+      <div id="currencyLoadingIndic"> </div>
 
-    <footer id="main-footer">
+      <footer id="main-footer">
       <p>&copy; 2025 Budget Blu. All rights reserved.</p>
       <p><a href="contactus.html">Contact Us</a></p>
       <p>Privacy Policy | Terms of Service</p>

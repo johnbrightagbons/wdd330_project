@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "vite",
-    "build": "vite build --emptyOutDir && cp -r ./src/json ./dist/ && cp -r ./src/images ./dist/",
+   "build": "vite build --emptyOutDir && xcopy /E /I /Y .\\src\\public\\json .\\dist\\json\\ && xcopy /E /I /Y .\\src\\public\\images .\\dist\\images\\", 
     "lint": "eslint *.js src/**/*.js",
     "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
     "test": "jest",

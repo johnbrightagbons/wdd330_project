@@ -1,12 +1,12 @@
 // Dashboard functionality
 import { AuthManager } from "./auth.js";
-import { ReportModule } from "./reports.js"; // Use named import with correct name
+import { ReportModule } from "./reports.js";
 
 // Dashboard initialization
 const reportModule = new ReportModule();
 document.addEventListener("DOMContentLoaded", () => {
   initializeDashboard();
-  setupMobileMenu(); // Add this
+  setupMobileMenu(); //
 });
 
 function initializeDashboard() {

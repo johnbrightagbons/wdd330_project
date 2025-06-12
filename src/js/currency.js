@@ -1,311 +1,417 @@
 export class CurrencyModule {
   constructor() {
-    this.apiKey = "3be8c0a0d1464c98d722973a"; // Replace with actual API key
-    this.baseUrl = "https://api.exchangerate-api.com/v4/latest/";
-    this.fallbackUrl = "https://api.fixer.io/latest"; // Backup API
-    this.defaultCurrency = "USD";
-    this.currentCurrency =
-      localStorage.getItem("selectedCurrency") || this.defaultCurrency;
-    this.exchangeRates = {};
-    this.lastUpdated = null;
-    this.cacheTimeout = 3600000; // 1 hour in milliseconds
+    this.apiKey = "3be8c0a0d1464c98d722973a"; // Get from https://www.exchangerate-api.com/
+    this.baseUrl =
+      "https://v6.exchangerate-api.com/v6/3be8c0a0d1464c98d722973a/latest/USD";
+    this.fallbackUrl = "https://api.exchangerate-api.com/v4/latest"; // Free tier fallback
+    this.currentCurrency = this.loadCurrentCurrency();
+    this.exchangeRates = this.loadExchangeRates();
+    this.lastUpdated = this.getLastUpdated();
+    this.updateInterval = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Supported currencies
+    this.supportedCurrencies = {
+      USD: { name: "US Dollar", symbol: "$", flag: "🇺🇸" },
+      EUR: { name: "Euro", symbol: "€", flag: "🇪🇺" },
+      GBP: { name: "British Pound", symbol: "£", flag: "🇬🇧" },
+      NGN: { name: "Nigerian Naira", symbol: "₦", flag: "🇳🇬" },
+      JPY: { name: "Japanese Yen", symbol: "¥", flag: "🇯🇵" },
+      CAD: { name: "Canadian Dollar", symbol: "C$", flag: "🇨🇦" },
+      AUD: { name: "Australian Dollar", symbol: "A$", flag: "🇦🇺" },
+      CHF: { name: "Swiss Franc", symbol: "CHF", flag: "🇨🇭" },
+      CNY: { name: "Chinese Yuan", symbol: "¥", flag: "🇨🇳" },
+      INR: { name: "Indian Rupee", symbol: "₹", flag: "🇮🇳" },
+      ZAR: { name: "South African Rand", symbol: "R", flag: "🇿🇦" },
+      KES: { name: "Kenyan Shilling", symbol: "KSh", flag: "🇰🇪" },
+      GHS: { name: "Ghanaian Cedi", symbol: "₵", flag: "🇬🇭" },
+    };
   }
 
-  // Initialize currency module
   async initialize() {
     try {
-      await this.loadExchangeRates();
+      console.log("Initializing Currency Module...");
+
+      // Check if rates need updating
+      if (this.shouldUpdateRates()) {
+        await this.fetchExchangeRates();
+      }
+
       this.setupCurrencySelector();
-      this.updateAllDisplayedAmounts();
-      console.log("Currency module initialized successfully");
+      this.updateCurrencyDisplay();
+
+      console.log("Currency Module initialized successfully");
+      return true;
     } catch (error) {
-      console.error("Failed to initialize currency module:", error);
-      this.handleApiError();
+      console.error("Failed to initialize Currency Module:", error);
+      this.handleApiError(error);
+      return false;
     }
   }
 
-  // Load exchange rates from API
-  async loadExchangeRates() {
-    // Check if we have cached rates that are still valid
-    if (this.isCacheValid()) {
-      this.exchangeRates = JSON.parse(localStorage.getItem("exchangeRates"));
-      this.lastUpdated = new Date(localStorage.getItem("ratesLastUpdated"));
-      return;
+  shouldUpdateRates() {
+    if (!this.lastUpdated || Object.keys(this.exchangeRates).length === 0) {
+      return true;
     }
 
+    const now = new Date().getTime();
+    const timeSinceUpdate = now - new Date(this.lastUpdated).getTime();
+
+    return timeSinceUpdate > this.updateInterval;
+  }
+
+  async fetchExchangeRates(baseCurrency = "USD") {
     try {
-      const response = await fetch(`${this.baseUrl}${this.defaultCurrency}`);
+      console.log("Fetching exchange rates...");
+
+      // Show loading indicator
+      this.showLoadingIndicator(true);
+
+      let url;
+      if (this.apiKey && this.apiKey !== "3be8c0a0d1464c98d722973a") {
+        // Use paid API with key
+        url = `${this.baseUrl}/${this.apiKey}/latest/${baseCurrency}`;
+      } else {
+        // Use free API (limited requests)
+        url = `${this.fallbackUrl}/${baseCurrency}`;
+      }
+
+      const response = await fetch(
+        "https://v6.exchangerate-api.com/v6/3be8c0a0d1464c98d722973a/latest/USD"
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      this.exchangeRates = data.rates;
-      this.lastUpdated = new Date();
 
-      // Cache the rates
-      localStorage.setItem("exchangeRates", JSON.stringify(this.exchangeRates));
-      localStorage.setItem("ratesLastUpdated", this.lastUpdated.toISOString());
+      // Handle different API response formats
+      if (data.conversion_rates) {
+        // Paid API format
+        this.exchangeRates = data.conversion_rates;
+      } else if (data.rates) {
+        // Free API format
+        this.exchangeRates = data.rates;
+      } else {
+        throw new Error("Invalid API response format");
+      }
+
+      // Add base currency rate
+      this.exchangeRates[baseCurrency] = 1;
+
+      // Save to localStorage
+      this.saveExchangeRates();
+      this.saveLastUpdated();
+
+      console.log("Exchange rates updated successfully");
+
+      // Show success notification
+      if (window.notificationModule) {
+        window.notificationModule.showSuccess(
+          "Exchange rates updated successfully!"
+        );
+      }
+
+      return this.exchangeRates;
     } catch (error) {
-      console.error("Primary API failed, trying fallback:", error);
-      await this.loadFallbackRates();
+      console.error("Error fetching exchange rates:", error);
+      this.handleApiError(error);
+      throw error;
+    } finally {
+      this.showLoadingIndicator(false);
     }
   }
 
-  // Load rates from fallback API
-  async loadFallbackRates() {
+  async convertAmount(amount, fromCurrency, toCurrency) {
     try {
-      const response = await fetch(this.fallbackUrl);
-      const data = await response.json();
-      this.exchangeRates = data.rates;
-      this.lastUpdated = new Date();
+      if (fromCurrency === toCurrency) {
+        return parseFloat(amount);
+      }
 
-      localStorage.setItem("exchangeRates", JSON.stringify(this.exchangeRates));
-      localStorage.setItem("ratesLastUpdated", this.lastUpdated.toISOString());
+      // Ensure we have current rates
+      if (this.shouldUpdateRates()) {
+        await this.fetchExchangeRates();
+      }
+
+      const fromRate = this.exchangeRates[fromCurrency];
+      const toRate = this.exchangeRates[toCurrency];
+
+      if (!fromRate || !toRate) {
+        throw new Error(
+          `Exchange rate not available for ${fromCurrency} or ${toCurrency}`
+        );
+      }
+
+      // Convert via USD (base currency)
+      const usdAmount = parseFloat(amount) / fromRate;
+      const convertedAmount = usdAmount * toRate;
+
+      return Math.round(convertedAmount * 100) / 100; // Round to 2 decimal places
     } catch (error) {
-      console.error("Fallback API also failed:", error);
-      this.useOfflineRates();
+      console.error("Error converting amount:", error);
+      throw error;
     }
   }
 
-  // Use offline/default rates when APIs fail
-  useOfflineRates() {
-    this.exchangeRates = {
-      EUR: 0.85,
-      GBP: 0.73,
-      JPY: 110.0,
-      CAD: 1.25,
-      AUD: 1.35,
-      CHF: 0.92,
-      CNY: 6.45,
-      INR: 74.5,
-    };
-    console.warn("Using offline exchange rates");
+  formatAmount(amount, currency = null) {
+    const targetCurrency = currency || this.currentCurrency;
+    const currencyInfo = this.supportedCurrencies[targetCurrency];
+
+    if (!currencyInfo) {
+      return `${parseFloat(amount).toFixed(2)} ${targetCurrency}`;
+    }
+
+    const formattedAmount = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(parseFloat(amount));
+
+    return `${currencyInfo.symbol}${formattedAmount}`;
   }
 
-  // Check if cached rates are still valid
-  isCacheValid() {
-    const cachedRates = localStorage.getItem("exchangeRates");
-    const lastUpdated = localStorage.getItem("ratesLastUpdated");
-
-    if (!cachedRates || !lastUpdated) return false;
-
-    const timeDiff = Date.now() - new Date(lastUpdated).getTime();
-    return timeDiff < this.cacheTimeout;
-  }
-
-  // Setup currency selector dropdown
   setupCurrencySelector() {
     const selector = document.getElementById("currencySelector");
     if (!selector) return;
 
-    // Populate currency options
-    const currencies = [
-      "USD",
-      "EUR",
-      "GBP",
-      "JPY",
-      "CAD",
-      "AUD",
-      "CHF",
-      "CNY",
-      "INR",
-    ];
-    selector.innerHTML = currencies
-      .map(
-        (currency) =>
-          `<option value="${currency}" ${currency === this.currentCurrency ? "selected" : ""}>
-        ${currency} - ${this.getCurrencyName(currency)}
-      </option>`
-      )
-      .join("");
+    // Clear existing options
+    selector.innerHTML = "";
+
+    // Populate with supported currencies
+    Object.entries(this.supportedCurrencies).forEach(([code, info]) => {
+      const option = document.createElement("option");
+      option.value = code;
+      option.textContent = `${info.flag} ${code} - ${info.name}`;
+      option.selected = code === this.currentCurrency;
+      selector.appendChild(option);
+    });
 
     // Handle currency change
-    selector.addEventListener("change", (e) => {
-      this.changeCurrency(e.target.value);
+    selector.addEventListener("change", async (e) => {
+      await this.changeCurrency(e.target.value);
     });
   }
 
-  // Change the current currency
   async changeCurrency(newCurrency) {
-    if (newCurrency === this.currentCurrency) return;
-
     try {
-      this.currentCurrency = newCurrency;
-      localStorage.setItem("selectedCurrency", newCurrency);
+      if (newCurrency === this.currentCurrency) return;
 
-      // Refresh rates if needed
-      if (!this.isCacheValid()) {
-        await this.loadExchangeRates();
+      const oldCurrency = this.currentCurrency;
+      this.currentCurrency = newCurrency;
+
+      // Save to localStorage
+      this.saveCurrentCurrency();
+
+      // Update all displayed amounts
+      await this.updateAllAmounts(oldCurrency, newCurrency);
+
+      // Update currency display
+      this.updateCurrencyDisplay();
+
+      // Show success notification
+      if (window.notificationModule) {
+        const currencyInfo = this.supportedCurrencies[newCurrency];
+        window.notificationModule.showSuccess(
+          `Currency changed to ${currencyInfo.name} (${currencyInfo.symbol})`
+        );
       }
 
-      this.updateAllDisplayedAmounts();
-      this.showCurrencyChangeNotification(newCurrency);
+      console.log(`Currency changed from ${oldCurrency} to ${newCurrency}`);
     } catch (error) {
       console.error("Error changing currency:", error);
+      if (window.notificationModule) {
+        window.notificationModule.showError("Failed to change currency");
+      }
     }
   }
 
-  // Convert amount from USD to target currency
-  convertAmount(amount, targetCurrency = this.currentCurrency) {
-    if (targetCurrency === this.defaultCurrency) return amount;
-
-    const rate = this.exchangeRates[targetCurrency];
-    if (!rate) {
-      console.warn(`Exchange rate not found for ${targetCurrency}`);
-      return amount;
-    }
-
-    return amount * rate;
-  }
-
-  // Convert amount from any currency to USD
-  convertToUSD(amount, fromCurrency) {
-    if (fromCurrency === this.defaultCurrency) return amount;
-
-    const rate = this.exchangeRates[fromCurrency];
-    if (!rate) return amount;
-
-    return amount / rate;
-  }
-
-  // Format amount with currency symbol
-  formatAmount(amount, currency = this.currentCurrency) {
-    const convertedAmount = this.convertAmount(amount, currency);
-
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(convertedAmount);
-  }
-
-  // Get currency symbol
-  getCurrencySymbol(currency) {
-    const symbols = {
-      USD: "$",
-      EUR: "€",
-      GBP: "£",
-      JPY: "¥",
-      CAD: "C$",
-      AUD: "A$",
-      CHF: "CHF",
-      CNY: "¥",
-      INR: "₹",
-    };
-    return symbols[currency] || currency;
-  }
-
-  // Get currency name
-  getCurrencyName(currency) {
-    const names = {
-      USD: "US Dollar",
-      EUR: "Euro",
-      GBP: "British Pound",
-      JPY: "Japanese Yen",
-      CAD: "Canadian Dollar",
-      AUD: "Australian Dollar",
-      CHF: "Swiss Franc",
-      CNY: "Chinese Yuan",
-      INR: "Indian Rupee",
-    };
-    return names[currency] || currency;
-  }
-
-  // Update all displayed amounts on the page
-  updateAllDisplayedAmounts() {
+  async updateAllAmounts(fromCurrency, toCurrency) {
+    // Update dashboard amounts
     const amountElements = document.querySelectorAll("[data-amount]");
-    amountElements.forEach((element) => {
+
+    for (const element of amountElements) {
       const originalAmount = parseFloat(element.dataset.amount);
       if (!isNaN(originalAmount)) {
-        element.textContent = this.formatAmount(originalAmount);
+        try {
+          const convertedAmount = await this.convertAmount(
+            originalAmount,
+            fromCurrency,
+            toCurrency
+          );
+          element.textContent = this.formatAmount(convertedAmount, toCurrency);
+          element.dataset.amount = convertedAmount;
+        } catch (error) {
+          console.error("Error updating amount:", error);
+        }
       }
+    }
+
+    // Update transaction amounts if on transactions page
+    if (window.transactionManager) {
+      await this.updateTransactionAmounts(fromCurrency, toCurrency);
+    }
+  }
+
+  async updateTransactionAmounts(fromCurrency, toCurrency) {
+    const transactionElements = document.querySelectorAll(
+      ".transaction-amount"
+    );
+
+    for (const element of transactionElements) {
+      const originalAmount = parseFloat(
+        element.dataset.originalAmount ||
+          element.textContent.replace(/[^\d.-]/g, "")
+      );
+      if (!isNaN(originalAmount)) {
+        try {
+          const convertedAmount = await this.convertAmount(
+            originalAmount,
+            fromCurrency,
+            toCurrency
+          );
+          element.textContent = this.formatAmount(convertedAmount, toCurrency);
+        } catch (error) {
+          console.error("Error updating transaction amount:", error);
+        }
+      }
+    }
+  }
+
+  updateCurrencyDisplay() {
+    // Update currency symbols throughout the app
+    const currencySymbols = document.querySelectorAll(".currency-symbol");
+    const currencyInfo = this.supportedCurrencies[this.currentCurrency];
+
+    currencySymbols.forEach((element) => {
+      element.textContent = currencyInfo
+        ? currencyInfo.symbol
+        : this.currentCurrency;
     });
 
-    // Update summary boxes
-    this.updateSummaryBoxes();
+    // Update currency selector if it exists
+    const selector = document.getElementById("currencySelector");
+    if (selector) {
+      selector.value = this.currentCurrency;
+    }
+  }
 
-    // Trigger custom event for other modules to listen
-    document.dispatchEvent(
-      new CustomEvent("currencyChanged", {
-        detail: { currency: this.currentCurrency },
-      })
+  getExchangeRate(fromCurrency, toCurrency) {
+    if (fromCurrency === toCurrency) return 1;
+
+    const fromRate = this.exchangeRates[fromCurrency];
+    const toRate = this.exchangeRates[toCurrency];
+
+    if (!fromRate || !toRate) return null;
+
+    return toRate / fromRate;
+  }
+
+  getAvailableCurrencies() {
+    return Object.keys(this.supportedCurrencies);
+  }
+
+  getCurrencyInfo(currency) {
+    return this.supportedCurrencies[currency] || null;
+  }
+
+  getCurrencySymbol(currency) {
+    const info = this.supportedCurrencies[currency];
+    return info ? info.symbol : currency;
+  }
+
+  getCurrencyName(currency) {
+    const info = this.supportedCurrencies[currency];
+    return info ? info.name : currency;
+  }
+
+  showLoadingIndicator(show) {
+    const indicator = document.getElementById("currencyLoadingIndicator");
+    if (indicator) {
+      indicator.style.display = show ? "block" : "none";
+    }
+  }
+
+  handleApiError(error) {
+    console.error("Currency API Error:", error);
+
+    let errorMessage = "Failed to update exchange rates";
+
+    if (error.message.includes("429")) {
+      errorMessage = "Rate limit exceeded. Please try again later.";
+    } else if (error.message.includes("401")) {
+      errorMessage = "Invalid API key. Please check your configuration.";
+    } else if (error.message.includes("network")) {
+      errorMessage = "Network error. Please check your internet connection.";
+    }
+
+    if (window.notificationModule) {
+      window.notificationModule.showError(errorMessage);
+    }
+  }
+
+  // Storage methods
+  loadCurrentCurrency() {
+    return localStorage.getItem("budgetBlu_currentCurrency") || "NGN";
+  }
+
+  saveCurrentCurrency() {
+    localStorage.setItem("budgetBlu_currentCurrency", this.currentCurrency);
+  }
+
+  loadExchangeRates() {
+    const stored = localStorage.getItem("budgetBlu_exchangeRates");
+    return stored ? JSON.parse(stored) : {};
+  }
+
+  saveExchangeRates() {
+    localStorage.setItem(
+      "budgetBlu_exchangeRates",
+      JSON.stringify(this.exchangeRates)
     );
   }
 
-  // Update dashboard summary boxes
-  updateSummaryBoxes() {
-    const totalIncomeEl = document.getElementById("totalIncome");
-    const totalExpensesEl = document.getElementById("totalExpenses");
-    const balanceEl = document.getElementById("balance");
-
-    if (totalIncomeEl && totalIncomeEl.dataset.amount) {
-      totalIncomeEl.textContent = this.formatAmount(
-        parseFloat(totalIncomeEl.dataset.amount)
-      );
-    }
-
-    if (totalExpensesEl && totalExpensesEl.dataset.amount) {
-      totalExpensesEl.textContent = this.formatAmount(
-        parseFloat(totalExpensesEl.dataset.amount)
-      );
-    }
-
-    if (balanceEl && balanceEl.dataset.amount) {
-      balanceEl.textContent = this.formatAmount(
-        parseFloat(balanceEl.dataset.amount)
-      );
-    }
+  getLastUpdated() {
+    return localStorage.getItem("budgetBlu_ratesLastUpdated");
   }
 
-  // Show currency change notification
-  showCurrencyChangeNotification(currency) {
-    if (typeof NotificationModule !== "undefined") {
-      NotificationModule.showSuccess(
-        `Currency changed to ${this.getCurrencyName(currency)} (${currency})`
-      );
-    }
+  saveLastUpdated() {
+    const now = new Date().toISOString();
+    localStorage.setItem("budgetBlu_ratesLastUpdated", now);
+    this.lastUpdated = now;
   }
 
-  // Handle API errors
-  handleApiError() {
-    if (typeof NotificationModule !== "undefined") {
-      NotificationModule.showWarning(
-        "Unable to fetch latest exchange rates. Using cached or default rates."
-      );
-    }
-  }
-
-  // Get current exchange rate for a currency
-  getExchangeRate(currency) {
-    return this.exchangeRates[currency] || 1;
-  }
-
-  // Get all available currencies
-  getAvailableCurrencies() {
-    return Object.keys(this.exchangeRates);
-  }
-
-  // Refresh exchange rates manually
+  // Utility method to refresh rates manually
   async refreshRates() {
     try {
-      // Clear cache
-      localStorage.removeItem("exchangeRates");
-      localStorage.removeItem("ratesLastUpdated");
-
-      await this.loadExchangeRates();
-      this.updateAllDisplayedAmounts();
-
-      if (typeof NotificationModule !== "undefined") {
-        NotificationModule.showSuccess("Exchange rates updated successfully");
-      }
+      await this.fetchExchangeRates();
+      return true;
     } catch (error) {
-      console.error("Failed to refresh rates:", error);
-      if (typeof NotificationModule !== "undefined") {
-        NotificationModule.showError("Failed to update exchange rates");
-      }
+      return false;
     }
   }
+
+  // Get rate update status
+  getRateUpdateStatus() {
+    if (!this.lastUpdated) {
+      return { status: "never", message: "Rates never updated" };
+    }
+
+    const now = new Date().getTime();
+    const lastUpdate = new Date(this.lastUpdated).getTime();
+    const timeSinceUpdate = now - lastUpdate;
+    const hoursAgo = Math.floor(timeSinceUpdate / (60 * 60 * 1000));
+
+    if (hoursAgo < 1) {
+      return { status: "recent", message: "Updated less than an hour ago" };
+    } else if (hoursAgo < 24) {
+      return { status: "today", message: `Updated ${hoursAgo} hours ago` };
+    } else {
+      const daysAgo = Math.floor(hoursAgo / 24);
+      return { status: "old", message: `Updated ${daysAgo} days ago` };
+    }
+  }
+}
+
+// Export for use in other modules
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = CurrencyModule;
 }
