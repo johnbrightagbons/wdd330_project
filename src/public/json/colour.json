@@ -1,0 +1,79 @@
+{
+  "colorSchemes": {
+    "expense": {
+      "primary": [
+        "#FF6384",
+        "#36A2EB", 
+        "#FFCE56", 
+        "#4BC0C0", 
+        "#9966FF", 
+        "#FF9F40", 
+        "#FF6384", 
+        "#C9CBCF"  
+      ],
+      "hover": [
+        "#FF4069",
+        "#2E8BC0",
+        "#FFB84D",
+        "#3DA5A5",
+        "#7F4FD9",
+        "#FF8C1A",
+        "#FF4069",
+        "#A8AAAE"
+      ]
+    },
+    "income": {
+      "primary": ["#4CAF50", "#66BB6A", "#81C784", "#A5D6A7"],
+      "gradient": {
+        "start": "rgba(76, 175, 80, 0.8)",
+        "end": "rgba(76, 175, 80, 0.2)"
+      }
+    },
+    "trend": {
+      "income": {
+        "line": "#4CAF50",
+        "fill": "rgba(76, 175, 80, 0.1)",
+        "point": "#4CAF50"
+      },
+      "expense": {
+        "line": "#f44336",
+        "fill": "rgba(244, 67, 54, 0.1)",
+        "point": "#f44336"
+      }
+    },
+    "budget": {
+      "budget": "#2196F3",
+      "actual": "#FF9800",
+      "over": "#F44336",
+      "under": "#4CAF50"
+    },
+    "savings": {
+      "primary": "#2196F3",
+      "secondary": "#03DAC6",
+      "gradient": "linear-gradient(135deg, #2196F3 0%, #03DAC6 100%)"
+    }
+  },
+
+  
+  "statusColors": {
+    "success": "#4CAF50",
+    "warning": "#FF9800",
+    "error": "#F44336",
+    "info": "#2196F3",
+    "neutral": "#9E9E9E"
+  },
+
+  
+  "categoryColors": {
+    "food": "#FF6384",
+    "transportation": "#36A2EB", 
+    "entertainment": "#FFCE56",
+    "utilities": "#4BC0C0",
+    "healthcare": "#9966FF",
+    "shopping": "#FF9F40",
+    "housing": "#E91E63",
+    "education": "#795548",
+    "insurance": "#607D8B",
+    "other": "#C9CBCF"
+  }
+}

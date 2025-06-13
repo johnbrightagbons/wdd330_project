@@ -1,0 +1,84 @@
+{
+  "alertTypes": {
+    "success": {
+      "icon": "✅",
+      "color": "#4CAF50",
+      "backgroundColor": "#E8F5E8",
+      "borderColor": "#4CAF50",
+      "duration": 3000
+    },
+    "error": {
+      "icon": "❌",
+      "color": "#F44336",
+      "backgroundColor": "#FFEBEE",
+      "borderColor": "#F44336",
+      "duration": 5000
+    },
+    "warning": {
+      "icon": "⚠️",
+      "color": "#FF9800",
+      "backgroundColor": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "duration": 4000
+    },
+    "info": {
+      "icon": "ℹ️",
+      "color": "#2196F3",
+      "backgroundColor": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "duration": 3000
+    }
+  },
+  "messages": {
+    "login": {
+      "success": "✅ Login successful! Redirecting to dashboard...",
+      "error": "❌ Invalid credentials. Please try again.",
+      "loading": "🔄 Logging in..."
+    },
+    "transaction": {
+      "added": "✅ Transaction added successfully!",
+      "updated": "✅ Transaction updated successfully!",
+      "deleted": "✅ Transaction deleted successfully!",
+      "error": "❌ Failed to process transaction. Please try again."
+    },
+    "budget": {
+      "exceeded": "⚠️ Budget exceeded for {category}!",
+      "warning": "⚠️ You've spent 80% of your {category} budget.",
+      "onTrack": "✅ You're on track with your budget!"
+    },
+    "export": {
+      "success": "✅ Data exported successfully!",
+      "error": "❌ Failed to export data. Please try again.",
+      "processing": "🔄 Preparing export..."
+    },
+    "sync": {
+      "success": "✅ Data synchronized successfully!",
+      "error": "❌ Sync failed. Check your connection.",
+      "inProgress": "🔄 Synchronizing data..."
+    }
+  },
+
+  
+  "settings": {
+    "position": "top-right", 
+    "maxAlerts": 5,
+    "stackDirection": "down",
+    "animation": {
+      "enter": "slideInRight",
+      "exit": "slideOutRight",
+      "duration": 300
+    },
+    "autoClose": true,
+    "closeButton": true,
+    "pauseOnHover": true
+  },
+
+  "sounds": {
+    "success": "/assets/sounds/success.mp3",
+    "error": "/assets/sounds/error.mp3",
+    "warning": "/assets/sounds/warning.mp3",
+    "info": "/assets/sounds/info.mp3",
+    "enabled": false,
+    "volume": 0.5
+  }
+}

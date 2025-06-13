@@ -1,30 +1,53 @@
-class CategoryModule {
+import { ConfigLoader } from "./config-loader.js";
+
+export class CategoriesModule {
   constructor() {
-    this.defaultCategories = {
-      income: ["Salary", "Freelance", "Investment", "Gift", "Other Income"],
-      expense: [
-        "Tithes",
-        "Offerings",
-        "Food",
-        "Rent",
-        "Utilities",
-        "Transportation",
-        "Entertainment",
-        "Healthcare",
-        "Shopping",
-        "Other",
-      ],
+    this.configLoader = new ConfigLoader();
+    this.categories = null;
+    this.init();
+  }
+
+  async init() {
+    try {
+      this.categories = await this.configLoader.loadConfig("categories.json");
+    } catch (error) {
+      console.error("Failed to load categories configuration:", error);
+      this.setDefaultCategories();
+    }
+  }
+
+  setDefaultCategories() {
+    this.categories = {
+      expense: {
+        food: { label: "Food & Dining", icon: "🍽️", color: "#FF6384" },
+        transportation: {
+          label: "Transportation",
+          icon: "🚗",
+          color: "#36A2EB",
+        },
+        entertainment: { label: "Entertainment", icon: "🎬", color: "#FFCE56" },
+      },
+      income: {
+        salary: { label: "Salary", icon: "💼", color: "#4CAF50" },
+        freelance: { label: "Freelance", icon: "💻", color: "#2196F3" },
+      },
     };
   }
 
-  getCategories(type = "all") {
-    if (type === "all") {
-      return [
-        ...this.defaultCategories.income,
-        ...this.defaultCategories.expense,
-      ];
-    }
-    return this.defaultCategories[type] || [];
+  getExpenseCategories() {
+    return this.categories?.expense || {};
+  }
+
+  getIncomeCategories() {
+    return this.categories?.income || {};
+  }
+
+  getCategoryInfo(type, categoryKey) {
+    return this.categories?.[type]?.[categoryKey] || null;
+  }
+
+  getAllCategories() {
+    return this.categories || {};
   }
 
   populateCategorySelect(selectElement, type = "expense") {

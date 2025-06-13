@@ -1,0 +1,167 @@
+{
+  "expense": {
+    "food": {
+      "label": "Food & Dining",
+      "icon": "🍽️",
+      "color": "#FF6384",
+      "budget": 500,
+      "subcategories": [
+        "Restaurants",
+        "Groceries", 
+        "Fast Food",
+        "Coffee",
+        "Delivery",
+        "Snacks"
+      ]
+    },
+    "transportation": {
+      "label": "Transportation",
+      "icon": "🚗",
+      "color": "#36A2EB",
+      "budget": 300,
+      "subcategories": [
+        "Gas",
+        "Public Transit",
+        "Uber/Lyft",
+        "Parking",
+        "Car Maintenance",
+        "Car Insurance"
+      ]
+    },
+    "entertainment": {
+      "label": "Entertainment",
+      "icon": "🎬",
+      "color": "#FFCE56",
+      "budget": 200,
+      "subcategories": [
+        "Movies",
+        "Games",
+        "Streaming Services",
+        "Events",
+        "Books",
+        "Hobbies"
+      ]
+    },
+    "utilities": {
+      "label": "Utilities",
+      "icon": "⚡",
+      "color": "#4BC0C0",
+      "budget": 350,
+      "subcategories": [
+        "Electricity",
+        "Water",
+        "Internet",
+        "Phone",
+        "Gas",
+        "Trash"
+      ]
+    },
+    "healthcare": {
+      "label": "Healthcare",
+      "icon": "🏥",
+      "color": "#9966FF",
+      "budget": 250,
+      "subcategories": [
+        "Doctor Visits",
+        "Pharmacy",
+        "Health Insurance",
+        "Dental",
+        "Vision",
+        "Mental Health"
+      ]
+    },
+    "shopping": {
+      "label": "Shopping",
+      "icon": "🛍️",
+      "color": "#FF9F40",
+      "budget": 400,
+      "subcategories": [
+        "Clothing",
+        "Electronics",
+        "Home & Garden",
+        "Personal Care",
+        "Gifts",
+        "Online Shopping"
+      ]
+    },
+    "housing": {
+      "label": "Housing",
+      "icon": "🏠",
+      "color": "#E91E63",
+      "budget": 1200,
+      "subcategories": [
+        "Rent/Mortgage",
+        "Home Maintenance",
+        "Home Insurance",
+        "Property Tax",
+        "HOA Fees",
+        "Furniture"
+      ]
+    },
+    "education": {
+      "label": "Education",
+      "icon": "📚",
+      "color": "#795548",
+      "budget": 200,
+      "subcategories": [
+        "Tuition",
+        "Books",
+        "Courses",
+        "Certifications",
+        "School Supplies",
+        "Student Loans"
+      ]
+    }
+  },
+
+  "income": {
+    "salary": {
+      "label": "Salary",
+      "icon": "💼",
+      "color": "#4CAF50",
+      "subcategories": [
+        "Primary Job",
+        "Part-time Job",
+        "Overtime",
+        "Bonus",
+        "Commission"
+      ]
+    },
+    "freelance": {
+      "label": "Freelance",
+      "icon": "💻",
+      "color": "#2196F3",
+      "subcategories": [
+        "Consulting",
+        "Design Work",
+        "Writing",
+        "Programming",
+        "Other Services"
+      ]
+    },
+    "investment": {
+      "label": "Investment",
+      "icon": "📈",
+      "color": "#FF9800",
+      "subcategories": [
+        "Dividends",
+        "Interest",
+        "Capital Gains",
+        "Rental Income",
+        "Crypto"
+      ]
+    },
+    "other": {
+      "label": "Other Income",
+        "icon": "🎁",
+        "color": "#9C27B0",
+        "subcategories": [
+          "Gifts",
+          "Inheritance",
+          "Side Hustle",
+          "Passive Income",
+          "Miscellaneous"
+        ]
+    }
+  } 
+}

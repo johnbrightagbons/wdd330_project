@@ -1,0 +1,139 @@
+{
+    "chartTypes": {
+    "expenseChart": {
+      "type": "doughnut",
+      "elementId": "expenseChart",
+      "title": "Expense Breakdown by Category",
+      "defaultData": {
+        "labels": ["Food", "Transportation", "Entertainment", "Utilities", "Healthcare", "Shopping", "Housing", "Other"],
+        "values": [450, 200, 150, 300, 180, 250, 800, 120]
+      },
+      "options": {
+        "cutout": "60%",
+        "plugins": {
+          "legend": {
+            "position": "bottom",
+            "labels": {
+              "padding": 20,
+              "usePointStyle": true,
+              "font": {
+                "size": 12
+              }
+            }
+          },
+          "tooltip": {
+            "callbacks": {
+              "label": "function(context) { return context.label + ': $' + context.parsed.toLocaleString() + ' (' + ((context.parsed / context.dataset.data.reduce((a,b) => a + b, 0)) * 100).toFixed(1) + '%)'; }"
+            }
+          }
+        }
+      }
+    },
+    "incomeChart": {
+      "type": "bar",
+      "elementId": "incomeChart", 
+      "title": "Monthly Income Overview",
+      "defaultData": {
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        "values": [3000, 3200, 2800, 3500, 3100, 3300, 3400, 3600, 3200, 3800, 3500, 4000]
+      },
+      "options": {
+        "scales": {
+          "y": {
+            "beginAtZero": true,
+            "ticks": {
+              "callback": "function(value) { return '$' + value.toLocaleString(); }"
+            },
+            "grid": {
+              "color": "rgba(0, 0, 0, 0.1)"
+            }
+          },
+          "x": {
+            "grid": {
+              "display": false
+            }
+          }
+        },
+        "plugins": {
+          "legend": {
+            "display": false
+          }
+        }
+      }
+    },
+    "trendChart": {
+      "type": "line",
+      "elementId": "trendChart",
+      "title": "Income vs Expenses Trend",
+      "defaultData": {
+        "labels": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"],
+        "income": [800, 750, 900, 850, 920, 880],
+        "expenses": [600, 700, 650, 750, 680, 720]
+      },
+      "options": {
+        "tension": 0.4,
+        "fill": true,
+        "pointRadius": 5,
+        "pointBorderWidth": 2,
+        "pointBorderColor": "#fff",
+        "scales": {
+          "y": {
+            "beginAtZero": true,
+            "ticks": {
+              "callback": "function(value) { return '$' + value.toLocaleString(); }"
+            }
+          }
+        },
+        "interaction": {
+          "mode": "index",
+          "intersect": false
+        }
+      }
+    },
+    "budgetChart": {
+      "type": "horizontalBar",
+      "elementId": "budgetChart",
+      "title": "Budget vs Actual Spending",
+      "defaultData": {
+        "labels": ["Food", "Transportation", "Entertainment", "Utilities", "Healthcare"],
+        "budget": [500, 300, 200, 350, 250],
+        "actual": [450, 280, 180, 320, 200]
+      },
+      "options": {
+        "indexAxis": "y",
+        "scales": {
+          "x": {
+            "beginAtZero": true,
+            "ticks": {
+              "callback": "function(value) { return '$' + value; }"
+            }
+          }
+        }
+      }
+    },
+    "savingsChart": {
+      "type": "line",
+      "elementId": "savingsChart",
+      "title": "Savings Growth Over Time",
+      "defaultData": {
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        "values": [1000, 1250, 1400, 1650, 1800, 2100]
+      },
+      "options": {
+        "fill": true,
+        "backgroundColor": "rgba(33, 150, 243, 0.1)",
+        "borderColor": "#2196F3",
+        "tension": 0.4
+      }
+    }
+  },
+  "chartDefaults": {
+    "responsive": true,
+    "maintainAspectRatio": false,
+    "devicePixelRatio": 2,
+    "animation": {
+      "duration": 1000,
+      "easing": "easeInOutQuart"
+    }
+  }
+}

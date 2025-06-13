@@ -5,10 +5,14 @@ class LoginHandler {
   constructor() {
     this.form = null;
     this.submitBtn = null;
+    this.messageHandler = new MessageHandler();
     this.init();
   }
 
-  init() {
+  async init() {
+    // Initialize message handler first
+    await this.messageHandler.init();
+
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () =>
         this.initializeElements()
@@ -70,17 +74,15 @@ class LoginHandler {
     this.setLoadingState(true);
 
     try {
-      await delay(500); // Simulate processing delay
+      await delay(500);
 
-      const result = await this.authenticateUser(formData); // FIXED: Await async method
+      const result = await this.authenticateUser(formData);
 
       if (result.success) {
         AuthManager.setUser(result.user);
-        MessageHandler.showMessage(
-          "messageArea",
-          "✅ Login successful! Redirecting to dashboard...",
-          "success"
-        );
+
+        // Use predefined success message from alerts.json
+        await MessageHandler.showLoginSuccess();
 
         setTimeout(() => {
           window.location.href = "../index.html";
@@ -90,7 +92,9 @@ class LoginHandler {
       }
     } catch (error) {
       console.error("Login error:", error);
-      MessageHandler.showMessage("messageArea", error.message, "error");
+
+      // Use predefined error message from alerts.json
+      await MessageHandler.showLoginError();
     } finally {
       this.setLoadingState(false);
     }
@@ -154,7 +158,6 @@ class LoginHandler {
     return true;
   }
 
-  // FIXED: Made async
   async authenticateUser(credentials) {
     try {
       const user = AuthManager.findUserByEmail(credentials.email);
