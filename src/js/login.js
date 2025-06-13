@@ -9,7 +9,6 @@ class LoginHandler {
   }
 
   init() {
-    // Wait for DOM to be ready
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () =>
         this.initializeElements()
@@ -22,23 +21,19 @@ class LoginHandler {
   initializeElements() {
     console.log("Initializing login handler...");
 
-    // Get form element
     this.form = document.getElementById("loginForm");
     if (!this.form) {
       console.error("Login form with ID 'loginForm' not found");
       return;
     }
 
-    // Get submit button - try multiple methods
     this.submitBtn = document.getElementById("loginBtn");
 
-    // If not found by ID, try to find by type within the form
     if (!this.submitBtn) {
       this.submitBtn = this.form.querySelector('button[type="submit"]');
       console.log("Submit button found by type selector:", this.submitBtn);
     }
 
-    // If still not found, try to find any button in the form
     if (!this.submitBtn) {
       this.submitBtn = this.form.querySelector("button");
       console.log("Submit button found by button selector:", this.submitBtn);
@@ -48,14 +43,16 @@ class LoginHandler {
       console.log("Submit button found successfully:", this.submitBtn);
     } else {
       console.error("Submit button not found with any method");
-      // List all buttons in the document for debugging
       const allButtons = document.querySelectorAll("button");
       console.log("All buttons found in document:", allButtons);
       return;
     }
 
-    // Add event listener to form
     this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+    this.form.addEventListener("input", () => {
+      MessageHandler.hideMessage("messageArea");
+    });
+
     console.log("Login handler initialized successfully");
   }
 
@@ -66,20 +63,16 @@ class LoginHandler {
     const formData = this.getFormData();
     MessageHandler.hideMessage("messageArea");
 
-    // Validate form
     if (!this.validateForm(formData)) {
       return;
     }
 
-    // Show loading state
     this.setLoadingState(true);
 
     try {
-      // Simulate processing delay
-      await delay(500);
+      await delay(500); // Simulate processing delay
 
-      // Authenticate user
-      const result = this.authenticateUser(formData);
+      const result = await this.authenticateUser(formData); // FIXED: Await async method
 
       if (result.success) {
         AuthManager.setUser(result.user);
@@ -89,7 +82,6 @@ class LoginHandler {
           "success"
         );
 
-        // Redirect after 2 seconds
         setTimeout(() => {
           window.location.href = "../index.html";
         }, 2000);
@@ -105,17 +97,8 @@ class LoginHandler {
   }
 
   setLoadingState(isLoading) {
-    console.log(
-      "Setting loading state:",
-      isLoading,
-      "Button exists:",
-      !!this.submitBtn
-    );
-
-    // Check if submitBtn exists before trying to modify it
     if (!this.submitBtn) {
       console.warn("Submit button not found, cannot set loading state");
-      // Try to find the button again
       this.submitBtn =
         document.getElementById("loginBtn") ||
         document.querySelector('button[type="submit"]') ||
@@ -130,11 +113,9 @@ class LoginHandler {
     if (isLoading) {
       this.submitBtn.disabled = true;
       this.submitBtn.textContent = "Logging in...";
-      console.log("Button set to loading state");
     } else {
       this.submitBtn.disabled = false;
       this.submitBtn.textContent = "Login";
-      console.log("Button loading state cleared");
     }
   }
 
@@ -144,6 +125,11 @@ class LoginHandler {
 
     if (!emailElement || !passwordElement) {
       console.error("Email or password input not found");
+      MessageHandler.showMessage(
+        "messageArea",
+        "Email or password field is missing.",
+        "error"
+      );
       return { email: "", password: "" };
     }
 
@@ -168,7 +154,8 @@ class LoginHandler {
     return true;
   }
 
-  authenticateUser(credentials) {
+  // FIXED: Made async
+  async authenticateUser(credentials) {
     try {
       const user = AuthManager.findUserByEmail(credentials.email);
 
@@ -200,7 +187,7 @@ class LoginHandler {
   }
 }
 
-// Initialize when DOM is ready - but only if we're on the login page
+// Only initialize if login form is present
 if (document.getElementById("loginForm")) {
   new LoginHandler();
 }
