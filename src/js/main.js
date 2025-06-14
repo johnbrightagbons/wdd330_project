@@ -4,7 +4,8 @@ import { TransactionManager } from "./transactions.js";
 import { ReportModule } from "./reports.js";
 import { CurrencyModule } from "./currency.js";
 import { NotificationModule } from "./notifications.js";
-import { CategoryModule } from "./category.js";
+import { CategoriesModule } from "./categories.js";
+
 // Main application entry point
 class BudgetBluApp {
   constructor() {
