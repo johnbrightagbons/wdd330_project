@@ -111,17 +111,13 @@ class SignupHandler {
 
   async createAccount(userData) {
     try {
-      const newUser = {
-        id: Date.now().toString(),
-        fullName: userData.fullName,
-        email: userData.email,
-        password: userData.password, // In production, hash this
-        purpose: userData.purpose,
-        createdAt: new Date().toISOString(),
-      };
-
-      AuthManager.saveUser(newUser);
-      return { success: true, message: "Account created successfully!" };
+      // Use AuthManager.register to hash the password and save the user
+      const result = await AuthManager.register(
+        userData.fullName,
+        userData.email,
+        userData.password
+      );
+      return result;
     } catch (error) {
       console.error("Error creating account:", error);
       return {
