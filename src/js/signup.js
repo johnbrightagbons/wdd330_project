@@ -9,13 +9,12 @@ class SignupHandler {
   }
 
   init() {
-    console.log("Signup handler initialized");
+    if (!this.form) return;
     this.form.addEventListener("submit", (e) => this.handleSubmit(e));
   }
 
   async handleSubmit(e) {
     e.preventDefault();
-    console.log("Signup form submitted");
 
     const formData = this.getFormData();
     MessageHandler.hideMessage("messageArea");
@@ -31,7 +30,6 @@ class SignupHandler {
     this.setLoadingState(true);
 
     try {
-      // Simulate processing delay
       await delay(1000);
 
       // Create account
@@ -41,16 +39,15 @@ class SignupHandler {
         MessageHandler.showMessage(
           "messageArea",
           "🎉 Account created successfully! Redirecting to login page...",
-          "success",
+          "success"
         );
         this.form.reset();
 
-        // Redirect after 3 seconds
         setTimeout(() => {
           window.location.href = "login.html";
-        }, 3000);
+        }, 5000);
       } else {
-        throw new Error(result.message);
+        MessageHandler.showMessage("messageArea", result.message, "error");
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -66,6 +63,8 @@ class SignupHandler {
       email: document.getElementById("email").value.trim().toLowerCase(),
       password: document.getElementById("password").value,
       confirmPassword: document.getElementById("confirmPassword").value,
+      purpose: document.getElementById("purpose")?.value || "",
+      agreeTerms: document.getElementById("agreeTerms")?.checked || false,
     };
   }
 
@@ -75,17 +74,20 @@ class SignupHandler {
       !Validator.validateRequired(data.fullName) ||
       !Validator.validateRequired(data.email) ||
       !Validator.validateRequired(data.password) ||
-      !Validator.validateRequired(data.confirmPassword)
+      !Validator.validateRequired(data.confirmPassword) ||
+      !Validator.validateRequired(data.purpose) ||
+      !data.agreeTerms
     ) {
-      return { isValid: false, message: "Please fill in all fields" };
+      return {
+        isValid: false,
+        message: "Please fill in all required fields and agree to the terms.",
+      };
     }
 
-    // Validate email
     if (!Validator.validateEmail(data.email)) {
       return { isValid: false, message: "Please enter a valid email address" };
     }
 
-    // Validate password
     if (!Validator.validatePassword(data.password)) {
       return {
         isValid: false,
@@ -93,12 +95,10 @@ class SignupHandler {
       };
     }
 
-    // Check password match
     if (data.password !== data.confirmPassword) {
       return { isValid: false, message: "Passwords do not match" };
     }
 
-    // Check if email exists
     if (AuthManager.findUserByEmail(data.email)) {
       return {
         isValid: false,
@@ -116,12 +116,11 @@ class SignupHandler {
         fullName: userData.fullName,
         email: userData.email,
         password: userData.password, // In production, hash this
+        purpose: userData.purpose,
         createdAt: new Date().toISOString(),
       };
 
       AuthManager.saveUser(newUser);
-      console.log("User created successfully:", newUser);
-
       return { success: true, message: "Account created successfully!" };
     } catch (error) {
       console.error("Error creating account:", error);
@@ -133,13 +132,11 @@ class SignupHandler {
   }
 
   setLoadingState(isLoading) {
-    if (isLoading) {
-      this.submitBtn.textContent = "Creating Account...";
-      this.submitBtn.disabled = true;
-    } else {
-      this.submitBtn.textContent = "Create Account";
-      this.submitBtn.disabled = false;
-    }
+    if (!this.submitBtn) return;
+    this.submitBtn.textContent = isLoading
+      ? "Creating Account..."
+      : "Create Account";
+    this.submitBtn.disabled = isLoading;
   }
 }
 
@@ -147,3 +144,59 @@ class SignupHandler {
 document.addEventListener("DOMContentLoaded", () => {
   new SignupHandler();
 });
+document.addEventListener("DOMContentLoaded", () => {
+  // Password strength and toggle
+  const passwordInput = document.getElementById("password");
+  const strengthFill = document.getElementById("strengthFill");
+  const strengthText = document.getElementById("strengthText");
+  const togglePassword = document.getElementById("togglePassword");
+  const confirmPasswordInput = document.getElementById("confirmPassword");
+
+  // Password strength logic
+  if (passwordInput && strengthFill && strengthText) {
+    passwordInput.addEventListener("input", () => {
+      const val = passwordInput.value;
+      const strength = getPasswordStrength(val);
+
+      // Update bar and text
+      if (val.length === 0) {
+        strengthFill.style.width = "0%";
+        strengthFill.style.background = "#eee";
+        strengthText.textContent = "Password strength";
+      } else if (strength === "weak") {
+        strengthFill.style.width = "33%";
+        strengthFill.style.background = "#f44336";
+        strengthText.textContent = "Weak";
+      } else if (strength === "medium") {
+        strengthFill.style.width = "66%";
+        strengthFill.style.background = "#ff9800";
+        strengthText.textContent = "Medium";
+      } else {
+        strengthFill.style.width = "100%";
+        strengthFill.style.background = "#4caf50";
+        strengthText.textContent = "Strong";
+      }
+    });
+  }
+
+  // Show/hide password logic
+  if (togglePassword && passwordInput) {
+    togglePassword.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+      togglePassword.innerHTML = isPassword
+        ? '<i class="fas fa-eye-slash"></i>'
+        : '<i class="fas fa-eye"></i>';
+    });
+  }
+});
+
+// Helper function for password strength
+function getPasswordStrength(password) {
+  if (password.length < 6) return "weak";
+  // If password contains any special character, it's strong
+  if (password.match(/[^A-Za-z0-9]/)) return "strong";
+  // If it contains uppercase or number, it's medium
+  if (password.match(/[A-Z]/) || password.match(/[0-9]/)) return "medium";
+  return "weak";
+}

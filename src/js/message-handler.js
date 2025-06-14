@@ -11,7 +11,7 @@ export class MessageHandler {
 
   async init() {
     try {
-      this.alertConfig = await this.configLoader.loadConfig("alerts.json");
+      this.alertConfig = await this.configLoader.loadConfig("/alerts.json");
       this.soundEnabled = this.alertConfig.sounds?.enabled || false;
     } catch (error) {
       console.error("Failed to load alert configuration:", error);

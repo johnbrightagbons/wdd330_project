@@ -26,6 +26,13 @@ class AuthModule {
     localStorage.setItem(this.usersKey, JSON.stringify(users));
   }
 
+  // Save a single new user to localStorage
+  saveUser(newUser) {
+    const users = this.getUsers();
+    users.push(newUser);
+    this.saveUsers(users);
+  }
+
   // Find a user by email
   findUserByEmail(email) {
     return this.getUsers().find((user) => user.email === email);
@@ -149,6 +156,5 @@ class AuthModule {
     return { success: true, message: "Password reset successful." };
   }
 }
-// ...existing code...
 
 export const AuthManager = new AuthModule();
