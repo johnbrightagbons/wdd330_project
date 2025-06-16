@@ -1,4 +1,4 @@
-class BudgetModule {
+export class BudgetModule {
   constructor() {
     this.budgets = this.loadBudgets();
   }

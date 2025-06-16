@@ -5,6 +5,8 @@ import { ReportModule } from "./reports.js";
 import { CurrencyModule } from "./currency.js";
 import { NotificationModule } from "./notifications.js";
 import { CategoriesModule } from "./categories.js";
+import { BudgetModule } from "./budget.js";
+import { BudgetAlertManager } from "./budget-alerts.js";
 
 // Main application entry point
 class BudgetBluApp {
