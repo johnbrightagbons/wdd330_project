@@ -103,7 +103,7 @@ class BudgetBluApp {
   async initializeDashboard() {
     try {
       // Initialize new modules
-      this.categoryModule = new CategoryModule();
+      this.categoriesModule = new CategoriesModule();
       this.budgetModule = new BudgetModule();
       this.budgetAlertManager = new BudgetAlertManager(
         this.budgetModule,

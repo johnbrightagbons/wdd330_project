@@ -55,9 +55,7 @@ class AuthModule {
 
     const passwordHash = await this.hashPassword(password);
     const newUser = { fullname, email, password: passwordHash };
-    const users = this.getUsers();
-    users.push(newUser);
-    this.saveUsers(users);
+    this.saveUser(newUser);
 
     return { success: true, message: "Registration successful." };
   }
@@ -86,6 +84,20 @@ class AuthModule {
       message: "Login successful.",
       token: session.token,
     };
+  }
+
+  // Get the current user session
+  getCurrentUser() {
+    const sessionJson = localStorage.getItem(this.sessionKey);
+    if (!sessionJson) return null;
+
+    const session = JSON.parse(sessionJson);
+    if (Date.now() > session.expiresAt) {
+      this.logout();
+      return null;
+    }
+
+    return this.findUserByEmail(session.email);
   }
 
   // Validate the current session
@@ -132,7 +144,7 @@ class AuthModule {
     return {
       success: true,
       message: "Password reset token generated.",
-      token, // Only for development. In production, send via email.
+      token, // Only for development/testing. In production, send via email.
     };
   }
 
@@ -157,4 +169,5 @@ class AuthModule {
   }
 }
 
+// Exporting an instance of the module
 export const AuthManager = new AuthModule();
