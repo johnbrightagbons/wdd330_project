@@ -113,7 +113,7 @@ class BudgetBluApp {
       // Populate category selects
       const categorySelect = document.getElementById("transactionCategory");
       if (categorySelect) {
-        this.categoryModule.populateCategorySelect(categorySelect);
+        this.categoriesModule.populateCategorySelect(categorySelect);
       }
 
       // Check budget alerts
