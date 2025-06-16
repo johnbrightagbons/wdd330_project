@@ -43,4 +43,6 @@ export class BudgetModule {
     localStorage.setItem("budgetBlu_budgets", JSON.stringify(this.budgets));
   }
 }
-<div id="currencyLoadingIndicator"></div>;
+const div = document.createElement("div");
+div.id = "currencyLoadingIndicator";
+document.body.appendChild(div);

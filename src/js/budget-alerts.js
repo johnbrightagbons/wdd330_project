@@ -1,4 +1,4 @@
-class BudgetAlertManager {
+export class BudgetAlertManager {
   constructor(budgetModule, notificationModule) {
     this.budgetModule = budgetModule;
     this.notificationModule = notificationModule;
