@@ -33,7 +33,12 @@ export class CategoriesModule {
       },
     };
   }
-
+  getCategories(type = "expense") {
+    if (type === "income") {
+      return Object.keys(this.getIncomeCategories());
+    }
+    return Object.keys(this.getExpenseCategories());
+  }
   getExpenseCategories() {
     return this.categories?.expense || {};
   }
