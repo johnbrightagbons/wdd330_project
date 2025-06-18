@@ -196,6 +196,25 @@ class BudgetBluApp {
       }
     });
   }
+  updateBudgetProgress() {
+    if (!this.budgetModule) return;
+
+    // Example: Get budget usage percentage from your BudgetModule
+    const progress = this.budgetModule.getBudgetUsagePercentage
+      ? this.budgetModule.getBudgetUsagePercentage()
+      : 0;
+
+    // Update the progress bar and text in the dashboard
+    const progressBar = document.getElementById("budgetProgressBar");
+    const progressText = document.getElementById("budgetProgress");
+
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+    if (progressText) {
+      progressText.textContent = `${progress}%`;
+    }
+  }
 }
 
 // Global logout function

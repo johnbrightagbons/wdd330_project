@@ -1,7 +1,7 @@
 export class ConfigLoader {
   constructor() {
     this.configCache = new Map();
-    this.basePath = "./src/data/";
+    this.basePath = "/json/";
   }
 
   async loadConfig(filename) {
